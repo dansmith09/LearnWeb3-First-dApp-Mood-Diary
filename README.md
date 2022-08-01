@@ -44,7 +44,7 @@ This project's type license is MIT. You can find out more about this license [he
 
 ## Demo
 
-[![Demo](./Assets/demo.gif)](https://dansmith09.github.io/LearnWeb3-First-dApp-Mood-Diary/ "Click here to try for yourself!")
+[![Demo](./Assets/Demo.gif)](https://dansmith09.github.io/LearnWeb3-First-dApp-Mood-Diary/ "Click here to try for yourself!")
 
 ## Questions
 
