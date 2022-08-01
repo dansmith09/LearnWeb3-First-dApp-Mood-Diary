@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dan's dApp</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mouse+Memoirs&family=Nunito+Sans&display=swap" rel="stylesheet">
+    <style>
+        * {
+            /* border: red 1px solid; */
+            margin: 0;
+            padding: 0;
+            background-color: black;
+            color: whitesmoke;
+            font-family: 'Nunito Sans', sans-serif;
+        }
+        h1 {
+            font-family: 'Mouse Memoirs', sans-serif;
+            border-bottom: turquoise 2px solid;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        div span {
+            color: turquoise;
+        }
+        body {
+            width: 100vw;
+            height: 100vh;
+        }
+        div {
+            border: 2px white solid;
+        }
+        div, body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        body > * {
+            margin: 15px;
+            text-align: center;
+        }
+        div > * {
+            margin: 5px;
+            text-align: center;
+            padding: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        a:hover {
+            transition: 0.3s;
+            color: turquoise;
+        }
+        button:hover {
+            transition: 0.3s;
+            color: turquoise;
+        }
+        button:active {
+            color: lightslategray;
+        }
+        button, input, div {
+            border-radius: 10px;
+        }
+        textarea:focus, input:focus {
+            outline: turquoise;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dan's dApp!</h1>
+    <h3>Use this cool dApp to tell the blockchain how you're feeling.<br>This dApp is run on the Ropsten test net and thus, you will need rETH to set your mood.<br><a href="https://faucet.egorfine.com/"><span>Click here to get Ropesten ETH</span></a></h3>
+    <div>
+        <label for="mood">Set your mood here </label>
+        <input type="text" name="" id="mood"/>
+        <button onclick="setMood()">Set Mood </button>
+    </div>
+    <div>
+        <label for="mood">See your mood here </label>
+        <h2>Current Mood:<br><span id="moodSpan"></span></h2>
+        <button onclick="getMood()">Get Mood </button>
+    </div>
+</body>
+<script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+<script>
+    // This is the injected web3
+    // This checks if user has a metamask in browser or anyother source for ethersjs
+    window.ethereum.enable();
+    // sets provider variable as called web3providers function passing through the current provider and the testnet we are using
+    var provider = new ethers.providers.Web3Provider(
+        web3.currentProvider,
+        "ropsten"
+    );
+    // Contract address from our remix deployed contract
+    var MoodContractAddress = "0xcc40c09e9c6D66A3DbF43B7e81a5a4871516fF4F";
+    // Contract ABI copied from compiler section of remix
+    var MoodContractABI = [
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_mood",
+				"type": "string"
+			}
+		],
+		"name": "setMood",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getMood",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}];
+    var MoodContract;
+    var signer;
+    // Because user is connected to metamask
+    // This function gets the users accounts
+    provider.listAccounts().then(function(accounts) {
+        // changes signer variable to the users first account
+        signer = provider.getSigner(accounts[0]);
+        // Creates an instance of the contract with our contracts information
+        MoodContract = new ethers.Contract(MoodContractAddress, MoodContractABI, signer);
+    });
+    // Because we have made an instance with our contract info we can call async functions 
+    async function getMood() {
+        getMoodPromise = MoodContract.getMood();
+        var Mood = await getMoodPromise;
+        console.log(Mood);
+        document.getElementById("moodSpan").innerHTML = Mood;
+    }
+    async function setMood() {
+        // gets the user inputted mood from the value in the html element
+        let mood = document.getElementById("mood").value;
+        // calls setMood function with the value inputted by user
+        setMoodPromise = MoodContract.setMood(mood);
+
+        await setMoodPromise;
+    }
+</script>
+</html>
