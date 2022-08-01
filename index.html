@@ -23,17 +23,30 @@
             padding-left: 5px;
             padding-right: 5px;
         }
-        div span {
+        .container span {
             color: turquoise;
         }
         body {
             width: 100vw;
             height: 100vh;
         }
-        div {
+        .stepNumber {
             border: 2px white solid;
+            background-color: turquoise;
+            width: 20px;
+            border-radius: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif, sans-serif;
+            font-weight: bolder;
+            position: absolute;
+            top: -28px;
+            left: -28px;  /* -26px is good for corner*/
         }
-        div, body {
+        .container {
+            border: 2px white solid;
+            margin-top: 20px;
+            position: relative;
+        }
+        .container, body {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -43,12 +56,12 @@
             margin: 15px;
             text-align: center;
         }
-        div > * {
-            margin: 5px;
+        .container > * {
+            margin: 10px;
             text-align: center;
             padding: 5px;
-            padding-left: 10px;
-            padding-right: 10px;
+            margin-left: 10px;
+            margin-right: 10px;
         }
         a:hover {
             transition: 0.3s;
@@ -61,7 +74,7 @@
         button:active {
             color: lightslategray;
         }
-        button, input, div {
+        button, input, .container {
             border-radius: 10px;
         }
         textarea:focus, input:focus {
@@ -71,15 +84,17 @@
 </head>
 <body>
     <h1>Dan's dApp!</h1>
-    <h3>Use this cool dApp to tell the blockchain how you're feeling.<br>This dApp is run on the Ropsten test net and thus, you will need rETH to set your mood.<br><a href="https://faucet.egorfine.com/"><span>Click here to get Ropesten ETH</span></a></h3>
-    <div>
+    <h3>Use this cool dApp to tell the blockchain how you're feeling.<br>This dApp is run on the Ropsten test net and thus, you will need rETH to set your mood.<br><a href="https://faucet.egorfine.com/" target="_blank"><span>Click here to get Ropesten ETH</span></a></h3>
+    <div class="container">
+        <div class="stepNumber">1</div>
         <label for="mood">Set your mood here </label>
-        <input type="text" name="" id="mood"/>
+        <input type="text" name="" id="mood" tabindex="1" autofocus/>
         <button onclick="setMood()">Set Mood </button>
     </div>
-    <div>
+    <div class="container">
+        <div class="stepNumber">2</div>
         <label for="mood">See your mood here </label>
-        <h2>Current Mood:<br><span id="moodSpan"></span></h2>
+        <h2>Current Mood:<br><span id="moodSpan">?</span></h2>
         <button onclick="getMood()">Get Mood </button>
     </div>
 </body>
